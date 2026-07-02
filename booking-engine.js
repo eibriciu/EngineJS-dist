@@ -234,18 +234,18 @@
         if (isEnglish) {
           options.push({ text: "Select your Package", value: "", label: "Select your Package", badge: null, days: 0, nights: 0 });
           if (totalNights >= 6) {
-            options.push({ text: `Imersion ${days}Days and ${totalNights}Nights`, value: "Imersão", label: "Imersion", badge: `${days}Days and ${totalNights}Nights`, days, nights: totalNights });
+            options.push({ text: `Imersion ${days} Days and ${totalNights} Nights`, value: "Imersão", label: "Imersion", badge: `${days} Days and ${totalNights} Nights`, days, nights: totalNights });
           } else {
-            options.push({ text: `Connection ${days}Days and ${totalNights}Nights`, value: "Conexão", label: "Connection", badge: `${days}Days and ${totalNights}Nights`, days, nights: totalNights });
-            options.push({ text: `Wild ${days}Days and ${totalNights}Nights`, value: "Selvagem", label: "Wild", badge: `${days}Days and ${totalNights}Nights`, days, nights: totalNights });
+            options.push({ text: `Connection ${days} Days and ${totalNights} Nights`, value: "Conexão", label: "Connection", badge: `${days} Days and ${totalNights} Nights`, days, nights: totalNights });
+            options.push({ text: `Wild ${days} Days and ${totalNights} Nights`, value: "Selvagem", label: "Wild", badge: `${days} Days and ${totalNights} Nights`, days, nights: totalNights });
           }
         } else {
           options.push({ text: "Selecione o Roteiro", value: "", label: "Selecione o Roteiro", badge: null, days: 0, nights: 0 });
           if (totalNights >= 6) {
-            options.push({ text: `Imersão ${days}Dias e ${totalNights}Noites`, value: "Imersão", label: "Imersão", badge: `${days}Dias e ${totalNights}Noites`, days, nights: totalNights });
+            options.push({ text: `Imersão ${days} Dias e ${totalNights} Noites`, value: "Imersão", label: "Imersão", badge: `${days} Dias e ${totalNights} Noites`, days, nights: totalNights });
           } else {
-            options.push({ text: `Conexão ${days}Dias e ${totalNights}Noites`, value: "Conexão", label: "Conexão", badge: `${days}Dias e ${totalNights}Noites`, days, nights: totalNights });
-            options.push({ text: `Selvagem ${days}Dias e ${totalNights}Noites`, value: "Selvagem", label: "Selvagem", badge: `${days}Dias e ${totalNights}Noites`, days, nights: totalNights });
+            options.push({ text: `Conexão ${days} Dias e ${totalNights} Noites`, value: "Conexão", label: "Conexão", badge: `${days} Dias e ${totalNights} Noites`, days, nights: totalNights });
+            options.push({ text: `Selvagem ${days} Dias e ${totalNights} Noites`, value: "Selvagem", label: "Selvagem", badge: `${days} Dias e ${totalNights} Noites`, days, nights: totalNights });
           }
         }
         return options;
