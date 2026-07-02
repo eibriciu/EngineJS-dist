@@ -800,7 +800,7 @@
         const placeholder = isEnglish ? `Child ${i + 1}` : `Criança ${i + 1}`;
         const dropdownOptions = [];
         for (let n = 0; n <= MAX_CHILD_AGE; n++) {
-          const optionText = isEnglish ? `${n}${n === 1 ? "year" : "years"}` : `${n}${n === 1 ? "ano" : "anos"}`;
+          const optionText = isEnglish ? `${n} ${n === 1 ? "year" : "years"}` : `${n} ${n === 1 ? "ano" : "anos"}`;
           dropdownOptions.push({ value: String(n), text: optionText });
         }
         const dropdown = CustomDropdown({
@@ -821,7 +821,7 @@
     }
     function updateHiddenInput() {
       const filled = ages.filter((age) => age !== "");
-      const formatted = count === 0 ? `None` : isEnglish ? `${count}|${filled.map((a) => `${a}${a === "1" ? "year" : "years"}old`).join(",")}` : `${count}|${filled.map((a) => `${a}${a === "1" ? "ano" : "anos"}`).join(",")}`;
+      const formatted = count === 0 ? `None` : isEnglish ? `${count} | ${filled.map((a) => `${a} ${a === "1" ? "year" : "years"} old`).join(", ")}` : `${count} | ${filled.map((a) => `${a} ${a === "1" ? "ano" : "anos"}`).join(", ")}`;
       triggerReactInput(input, formatted);
       validateAlert();
     }
@@ -1130,7 +1130,7 @@
       validateFields();
     });
     function updateHiddenInput() {
-      const formatted = `${nameValue || ""}|${relationshipValue || ""}|${phoneValue || ""}`;
+      const formatted = `${nameValue || ""} | ${relationshipValue || ""} | ${phoneValue || ""}`;
       triggerReactInput(textarea, formatted);
     }
     function validateFields() {
@@ -1698,7 +1698,7 @@
           parts.push(timeValue);
         if (addressBackendValue)
           parts.push(addressBackendValue);
-        formatted = parts.join("|");
+        formatted = parts.join(" | ");
       }
       triggerReactInput(textarea, formatted);
     }
