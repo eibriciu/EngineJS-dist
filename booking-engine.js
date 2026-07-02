@@ -2,8 +2,7 @@
   "use strict";
   const BASE_STYLES = {
     error: "color:red;font-size:0.9em;margin-top:4px;display:none",
-    select: "width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;font-size:1rem",
-    grid: "display:grid;gap:16px;width:100%"
+    select: "width:100%;padding:8px;border-radius:4px;border:1px solid #ccc;font-size:1rem"
   };
   function triggerReactInput(input, value) {
     var _a;
@@ -64,7 +63,6 @@
     routeInput: 'input[data-testid="form-custom-field-cf_roteiro-input"]',
     firstName: '[data-testid="guest-form-first-name-input"]',
     lastName: '[data-testid="guest-form-last-name-input"]',
-    mainContainer: ".d-ndml3r",
     detailsButton: 'button[data-testid="shopping-cart-summary-toggle-details-button"]',
     childrenInput: 'input[data-testid="form-custom-field-cf_Criancas-input"]',
     emergencyContactInput: 'textarea[data-testid="form-custom-field-cf_emergencia-input"]',
@@ -873,32 +871,43 @@
     else
       triggerReactInput(input, `None`);
   }
-  function initializeFieldsLayout() {
-    var _a, _b, _c, _d;
-    const mainContainer = document.querySelector(SELECTORS.mainContainer);
-    if (!mainContainer || isInitialized(mainContainer, "layoutApplied"))
+  const FIELDS_GRID_ID = "custom-fields-grid";
+  const FIELDS_GRID_STYLE_ID = "custom-fields-grid-style";
+  function ensureGridStyle() {
+    if (document.getElementById(FIELDS_GRID_STYLE_ID))
       return;
-    markAsInitialized(mainContainer, "layoutApplied");
-    const containers = [
-      (_a = document.querySelector(SELECTORS.firstName)) == null ? void 0 : _a.closest(".chakra-stack"),
-      (_b = document.querySelector(SELECTORS.lastName)) == null ? void 0 : _b.closest(".chakra-stack"),
-      (_c = document.querySelector(SELECTORS.cpfInput)) == null ? void 0 : _c.closest(".chakra-stack"),
-      (_d = document.querySelector(SELECTORS.birthDateInput)) == null ? void 0 : _d.closest(".chakra-stack")
+    const style = document.createElement("style");
+    style.id = FIELDS_GRID_STYLE_ID;
+    style.textContent = `#${FIELDS_GRID_ID}{display:grid;grid-template-columns:1fr;gap:16px;width:100%}@media(min-width:640px){#${FIELDS_GRID_ID}{grid-template-columns:1fr 1fr}}`;
+    document.head.appendChild(style);
+  }
+  function findFieldCells() {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const cells = [
+      (_b = (_a = document.querySelector(SELECTORS.firstName)) == null ? void 0 : _a.closest(".chakra-stack")) == null ? void 0 : _b.parentElement,
+      (_d = (_c = document.querySelector(SELECTORS.lastName)) == null ? void 0 : _c.closest(".chakra-stack")) == null ? void 0 : _d.parentElement,
+      (_f = (_e = document.querySelector(SELECTORS.cpfInput)) == null ? void 0 : _e.closest(".chakra-stack")) == null ? void 0 : _f.parentElement,
+      (_h = (_g = document.querySelector(SELECTORS.birthDateInput)) == null ? void 0 : _g.closest(".chakra-stack")) == null ? void 0 : _h.parentElement
     ].filter((el) => !!el);
-    if (containers.length !== 4)
+    return cells.length === 4 ? cells : null;
+  }
+  function initializeFieldsLayout() {
+    const cells = findFieldCells();
+    if (!cells)
       return;
-    containers.forEach((container) => container.remove());
-    const gridContainer = document.createElement("div");
-    gridContainer.classList.add("custom-fields-grid");
-    gridContainer.style.cssText = BASE_STYLES.grid;
-    const adjustColumns = () => {
-      gridContainer.style.gridTemplateColumns = window.innerWidth < 640 ? "1fr" : "1fr 1fr";
-    };
-    adjustColumns();
-    window.addEventListener("resize", debounce(adjustColumns, 250));
-    containers.forEach((container) => gridContainer.appendChild(container));
-    mainContainer.innerHTML = "";
-    mainContainer.appendChild(gridContainer);
+    const existingGrid = document.getElementById(FIELDS_GRID_ID);
+    const isHealthy = !!existingGrid && cells.every((c) => c.parentElement === existingGrid);
+    if (isHealthy)
+      return;
+    ensureGridStyle();
+    const grid = existingGrid ?? document.createElement("div");
+    grid.id = FIELDS_GRID_ID;
+    const anchor = cells[0];
+    const parent = anchor.parentElement;
+    if (!parent)
+      return;
+    parent.insertBefore(grid, anchor);
+    cells.forEach((cell) => grid.appendChild(cell));
   }
   function adjustCPFLabel() {
     var _a, _b;
