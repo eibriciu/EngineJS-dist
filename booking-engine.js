@@ -873,6 +873,7 @@
   }
   const FIELDS_GRID_ID = "custom-fields-grid";
   const FIELDS_GRID_STYLE_ID = "custom-fields-grid-style";
+  const RESERVATION_HOLDER_HEADING_ID = "reservation-holder-heading";
   function ensureGridStyle() {
     if (document.getElementById(FIELDS_GRID_STYLE_ID))
       return;
@@ -891,23 +892,49 @@
     ].filter((el) => !!el);
     return cells.length === 4 ? cells : null;
   }
+  function ensureReservationHolderHeading(grid) {
+    const gridRow = grid.parentElement;
+    if (!gridRow)
+      return;
+    const stack = gridRow.parentElement;
+    if (!stack)
+      return;
+    const existing = document.getElementById(RESERVATION_HOLDER_HEADING_ID);
+    if (existing && existing.parentElement === stack && existing.nextElementSibling === gridRow)
+      return;
+    const heading = existing ?? document.createElement("h4");
+    if (!existing) {
+      heading.id = RESERVATION_HOLDER_HEADING_ID;
+      heading.textContent = detectPageLanguage() ? "Reservation holder" : "Responsável da reserva";
+      const nativeHeading = document.querySelector("h4.chakra-heading");
+      if (nativeHeading)
+        heading.className = nativeHeading.className;
+      else
+        heading.style.cssText = "font-size:1rem;font-weight:600;margin:0;";
+    }
+    stack.insertBefore(heading, gridRow);
+  }
   function initializeFieldsLayout() {
     const cells = findFieldCells();
     if (!cells)
       return;
     const existingGrid = document.getElementById(FIELDS_GRID_ID);
-    const isHealthy = !!existingGrid && cells.every((c) => c.parentElement === existingGrid);
-    if (isHealthy)
-      return;
-    ensureGridStyle();
-    const grid = existingGrid ?? document.createElement("div");
-    grid.id = FIELDS_GRID_ID;
-    const anchor = cells[0];
-    const parent = anchor.parentElement;
-    if (!parent)
-      return;
-    parent.insertBefore(grid, anchor);
-    cells.forEach((cell) => grid.appendChild(cell));
+    const gridHealthy = !!existingGrid && cells.every((c) => c.parentElement === existingGrid);
+    let grid = existingGrid;
+    if (!gridHealthy) {
+      ensureGridStyle();
+      const newGrid = existingGrid ?? document.createElement("div");
+      newGrid.id = FIELDS_GRID_ID;
+      const anchor = cells[0];
+      const parent = anchor.parentElement;
+      if (!parent)
+        return;
+      parent.insertBefore(newGrid, anchor);
+      cells.forEach((cell) => newGrid.appendChild(cell));
+      grid = newGrid;
+    }
+    if (grid)
+      ensureReservationHolderHeading(grid);
   }
   function adjustCPFLabel() {
     var _a, _b;
