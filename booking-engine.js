@@ -2186,14 +2186,14 @@ body :where(p,.chakra-text,label) {
 
 body > div > header,
 body [role="banner"] {
-	background:var(--pinx-sidebar-bg)!important;
+	background:var(--pinx-primary)!important;
 	border-bottom:1px solid var(--pinx-border)!important;
 	box-shadow:0 1px 0 rgba(58,48,36,.04)!important;
 	color:var(--pinx-text)!important;
 }
 
 body :where(.cb-header,[data-testid="header"]) {
-	background:var(--pinx-sidebar-bg)!important;
+	background:var(--pinx-primary)!important;
 	color:var(--pinx-text)!important;
 }
 
