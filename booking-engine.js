@@ -3030,10 +3030,12 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
     const input = document.querySelector(SELECTOR);
     if (!input || input.dataset.restrictionsApplied) return;
     input.dataset.restrictionsApplied = "true";
+    const en = detectPageLanguage();
+    const t = (pt2, english2) => en ? english2 : pt2;
     const container = input.closest(".chakra-stack");
     container == null ? void 0 : container.classList.add("engine-restrictions-field");
     const label = container == null ? void 0 : container.querySelector("label");
-    if (label) label.textContent = "Restrições alimentares e físicas *";
+    if (label) label.textContent = t("Restrições alimentares e físicas *", "Dietary and physical restrictions *");
     input.readOnly = true;
     input.hidden = true;
     input.style.display = "none";
@@ -3049,11 +3051,11 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
     const updateSummary = () => {
       const value = input.value.trim();
       const none = value === NONE;
-      summary.textContent = none ? "Nenhuma restrição informada" : value || "Informe as necessidades dos hóspedes";
-      action.textContent = value ? "Editar" : "Informar";
+      summary.textContent = none ? t("Nenhuma restrição informada", "No restrictions reported") : value || t("Informe as necessidades dos hóspedes", "Tell us about your guests’ needs");
+      action.textContent = value ? t("Editar", "Edit") : t("Informar", "Add");
       status.innerHTML = value ? '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m5 12 4 4L19 6"/></svg>' : '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4 6v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="M12 8v5m0 3v.1"/></svg>';
       button.dataset.filled = String(Boolean(value));
-      button.setAttribute("aria-label", `${value ? "Editar" : "Informar"} restrições alimentares e físicas. ${summary.textContent}`);
+      button.setAttribute("aria-label", `${value ? t("Editar", "Edit") : t("Informar", "Add")} ${t("restrições alimentares e físicas", "dietary and physical restrictions")}. ${summary.textContent}`);
     };
     updateSummary();
     input.addEventListener("input", updateSummary);
@@ -3080,18 +3082,18 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
       prepareResponsiveDialog(dialog);
       dialog.setAttribute("aria-labelledby", "restrictions-title");
       dialog.innerHTML = `<form method="dialog">
-   <header><h2 id="restrictions-title">Restrições alimentares e físicas</h2><button type="button" data-close aria-label="Fechar">×</button></header>
+   <header><h2 id="restrictions-title">${t("Restrições alimentares e físicas", "Dietary and physical restrictions")}</h2><button type="button" data-close aria-label="${t("Fechar", "Close")}">×</button></header>
    <div class="restrictions-editor-body">
-   <p><strong>Sua segurança começa com esta informação.</strong> Estamos em uma região isolada, onde o atendimento médico de emergência não é imediato. Omitir alergias ou limitações pode colocar sua vida em risco e exigir uma remoção de alto custo.</p>
-   <p>Informe as restrições de todos os hóspedes da reserva, identificando a quem se referem. Inclua alergias, intolerâncias, alimentação vegetariana ou vegana, limitações físicas e condições de saúde relevantes para a estadia.</p>
-   <p>Este espaço é para restrições, não para gostos ou preferências, como “não gosto de arroz”. Se uma seletividade alimentar estiver ligada a uma condição de saúde, informe essa necessidade.</p>
-   <label class="choice"><input type="checkbox" data-ack> Confirmo que entendi a importância de informar corretamente as restrições de todos os hóspedes.</label>
-   <fieldset><legend>O que precisamos saber?</legend></fieldset>
-   <label class="choice" data-none-choice><input type="checkbox" data-none> Nenhum hóspede possui essas restrições ou condições de saúde.</label>
+   <p><strong>${t("Sua segurança começa com esta informação.", "Your safety starts with this information.")}</strong> ${t("Estamos em uma região isolada, onde o atendimento médico de emergência não é imediato. Omitir alergias ou limitações pode colocar sua vida em risco e exigir uma remoção de alto custo.", "We are in a remote area where emergency medical care is not immediate. Not reporting allergies or limitations can put your life at risk and require a costly evacuation.")}</p>
+   <p>${t("Informe as restrições de todos os hóspedes da reserva, identificando a quem se referem. Inclua alergias, intolerâncias, alimentação vegetariana ou vegana, limitações físicas e condições de saúde relevantes para a estadia.", "Report restrictions for all guests in the reservation, identifying each person. Include allergies, intolerances, vegetarian or vegan diets, physical limitations and health conditions relevant to the stay.")}</p>
+   <p>${t("Este espaço é para restrições, não para gostos ou preferências, como “não gosto de arroz”. Se uma seletividade alimentar estiver ligada a uma condição de saúde, informe essa necessidade.", "This section is for restrictions, not tastes or preferences such as “I don’t like rice”. If selective eating is related to a health condition, please explain that need.")}</p>
+   <label class="choice"><input type="checkbox" data-ack> ${t("Confirmo que entendi a importância de informar corretamente as restrições de todos os hóspedes.", "I understand the importance of accurately reporting all guests’ restrictions.")}</label>
+   <fieldset><legend>${t("O que precisamos saber?", "What do we need to know?")}</legend></fieldset>
+   <label class="choice" data-none-choice><input type="checkbox" data-none> ${t("Nenhum hóspede possui essas restrições ou condições de saúde.", "None of the guests has these restrictions or health conditions.")}</label>
    <p data-error role="alert"></p>
-   <section data-review hidden><label>Confira suas informações originais<textarea data-result rows="4" readonly></textarea></label><label class="choice"><input type="checkbox" data-reviewed> Confirmo que as informações estão corretas e completas.</label><p>Ao salvar, a IA organizará o texto para a ficha da reserva. Seu relato original será mantido para revisão.</p></section>
+   <section data-review hidden><label>${t("Confira suas informações originais", "Review your original information")}<textarea data-result rows="4" readonly></textarea></label><label class="choice"><input type="checkbox" data-reviewed> ${t("Confirmo que as informações estão corretas e completas.", "I confirm that the information is correct and complete.")}</label><p>${t("Ao salvar, a IA organizará o texto para a ficha da reserva. Seu relato original será mantido para revisão.", "When you save, AI will organize the text in Portuguese for the reservation record. Your original text will be kept for review.")}</p></section>
    </div>
-   <footer><button type="button" data-prepare>Revisar informações</button><button type="submit" data-save hidden>Confirmar e salvar</button></footer>
+   <footer><button type="button" data-prepare>${t("Revisar informações", "Review information")}</button><button type="submit" data-save hidden>${t("Confirmar e salvar", "Confirm and save")}</button></footer>
   </form>`;
       const form = dialog.querySelector("form");
       const ack = dialog.querySelector("[data-ack]");
@@ -3104,9 +3106,9 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
       const save = dialog.querySelector("[data-save]");
       const fields = categories.map((category, index) => {
         const wrapper = document.createElement("div");
-        const titles = ["Tenho restrições alimentares", "Tenho restrições físicas", "Tenho uma condição de saúde relevante"];
-        const placeholders = ["Ex.: Ana — alergia a alho; João — vegano.", "Ex.: Ana — não pode caminhar longas distâncias.", "Ex.: João — trombose."];
-        wrapper.innerHTML = `<label class="choice"><input type="checkbox"> ${titles[index]}</label><label hidden>Descreva e identifique o hóspede<textarea rows="2"></textarea></label>`;
+        const titles = [t("Tenho restrições alimentares", "I have dietary restrictions"), t("Tenho restrições físicas", "I have physical restrictions"), t("Tenho uma condição de saúde relevante", "I have a relevant health condition")];
+        const placeholders = [t("Ex.: Ana — alergia a alho; João — vegano.", "E.g. Ana — garlic allergy; John — vegan."), t("Ex.: Ana — não pode caminhar longas distâncias.", "E.g. Ana — cannot walk long distances."), t("Ex.: João — trombose.", "E.g. John — thrombosis.")];
+        wrapper.innerHTML = `<label class="choice"><input type="checkbox"> ${titles[index]}</label><label hidden>${t("Descreva e identifique o hóspede", "Describe the restriction and identify the guest")}<textarea rows="2"></textarea></label>`;
         const check = wrapper.querySelector("input");
         const details = wrapper.querySelectorAll("label")[1];
         const text = wrapper.querySelector("textarea");
@@ -3153,26 +3155,28 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
         review.hidden = true;
         save.hidden = true;
       });
+      let reviewedDraft = "";
       const draftText = () => none.checked ? NONE : fields.map((f) => `${f.category}: ${f.check.checked ? f.text.value.trim() : "Nenhuma informada"}`).join("\n");
       prepare.onclick = () => {
         error.textContent = "";
         if (!ack.checked) {
-          error.textContent = "Confirme a leitura do aviso de segurança.";
+          error.textContent = t("Confirme a leitura do aviso de segurança.", "Confirm that you have read the safety notice.");
           ack.focus();
           return;
         }
         const selected = fields.filter((f) => f.check.checked);
         if (!none.checked && !selected.length) {
-          error.textContent = "Selecione as restrições ou marque a opção “nenhum”.";
+          error.textContent = t("Selecione as restrições ou marque a opção “nenhum”.", "Select the restrictions or choose “none”.");
           return;
         }
         const empty = selected.find((f) => !f.text.value.trim());
         if (empty) {
-          error.textContent = "Descreva cada restrição selecionada.";
+          error.textContent = t("Descreva cada restrição selecionada.", "Describe each selected restriction.");
           empty.text.focus();
           return;
         }
-        result2.value = draftText();
+        result2.value = none.checked ? t("Nenhum hóspede possui essas restrições ou condições de saúde.", "None of the guests has these restrictions or health conditions.") : fields.filter((f) => f.check.checked).map((f) => `${en ? { Alimentar: "Dietary", Física: "Physical", Doença: "Health conditions" }[f.category] : f.category}: ${f.text.value}`).join("\n");
+        reviewedDraft = draftText();
         review.hidden = false;
         save.hidden = false;
         reviewed.checked = false;
@@ -3183,8 +3187,8 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
       form.onsubmit = async (event) => {
         event.preventDefault();
         if (saving) return;
-        if (review.hidden || !reviewed.checked || !ack.checked || result2.value !== draftText()) {
-          error.textContent = "Revise as informações originais e confirme que estão corretas.";
+        if (review.hidden || !reviewed.checked || !ack.checked || reviewedDraft !== draftText()) {
+          error.textContent = t("Revise as informações originais e confirme que estão corretas.", "Review your original information and confirm it is correct.");
           return;
         }
         const version = revision;
@@ -3194,7 +3198,7 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
         saving = true;
         save.disabled = true;
         prepare.disabled = true;
-        save.textContent = "Salvando…";
+        save.textContent = t("Salvando…", "Saving…");
         form.setAttribute("aria-busy", "true");
         error.textContent = "";
         try {
@@ -3202,7 +3206,7 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
           if (!dialog.isConnected || !dialog.open || revision !== version || !reviewed.checked || !ack.checked) return;
           if (!normalized || !categories.every((c) => normalized.includes(`${c}:`))) throw new Error("Invalid summary");
           if (input.maxLength > 0 && normalized.length > input.maxLength) {
-            error.textContent = `O resumo excedeu ${input.maxLength} caracteres. Ajuste o relato sem omitir restrições e revise novamente.`;
+            error.textContent = en ? `The summary exceeds ${input.maxLength} characters. Adjust the text without omitting restrictions and review it again.` : `O resumo excedeu ${input.maxLength} caracteres. Ajuste o relato sem omitir restrições e revise novamente.`;
             return;
           }
           saved = original;
@@ -3216,12 +3220,12 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
           updateSummary();
           dialog.close();
         } catch {
-          if (dialog.isConnected && dialog.open && revision === version) error.textContent = "Não foi possível salvar. Seu texto original foi mantido; tente novamente.";
+          if (dialog.isConnected && dialog.open && revision === version) error.textContent = t("Não foi possível salvar. Seu texto original foi mantido; tente novamente.", "Unable to save. Your original text was kept; please try again.");
         } finally {
           saving = false;
           save.disabled = false;
           prepare.disabled = false;
-          save.textContent = "Confirmar e salvar";
+          save.textContent = t("Confirmar e salvar", "Confirm and save");
           form.removeAttribute("aria-busy");
         }
       };
@@ -3569,6 +3573,7 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
     return wrapper;
   }
   function initializeLanguageDropdown() {
+    var _a;
     const input = document.querySelector(SELECTORS.languageInput);
     if (!input || isInitialized(input, "dropdownApplied"))
       return;
@@ -3576,11 +3581,18 @@ dialog.engine-responsive-dialog.engine-restrictions-editor{padding:0;overflow:hi
     const isEnglish = detectPageLanguage();
     const mapper = DropdownMappers.language;
     const options = mapper.getOptions(isEnglish);
-    const dropdownOptions = options.filter((opt) => opt.value !== "").map((opt) => ({ value: opt.value, text: opt.text }));
+    const dropdownOptions = options.filter((opt) => opt.value !== "").map((opt) => ({
+      value: opt.value,
+      text: opt.text,
+      badge: opt.value === "Português" ? isEnglish ? "Included" : "Incluso" : isEnglish ? "+R$ 200/night" : "+R$ 200/noite"
+    }));
+    const label = (_a = input.closest(".chakra-stack")) == null ? void 0 : _a.querySelector("label");
+    if (label) label.textContent = isEnglish ? "Guide language *" : "Idioma do guia *";
+    const badgeStyle = "display:inline-flex;align-items:center;flex-shrink:0;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:500;white-space:nowrap;background:var(--booking-engine-colors-gray-100,#edf2f7);color:var(--booking-engine-colors-primary-700,#196050);border:1px solid var(--booking-engine-colors-gray-200,#e2e8f0);";
     const errorElement = createErrorElement("guide-language-error", input.parentElement);
     input.style.display = "none";
     const dropdown = CustomDropdown({
-      styles: COMPACT_DROPDOWN_STYLES$1,
+      styles: { ...COMPACT_DROPDOWN_STYLES$1, badge: badgeStyle, optionBadge: badgeStyle },
       placeholder: options[0].text,
       options: dropdownOptions,
       value: input.value || "",
